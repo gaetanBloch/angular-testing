@@ -2,6 +2,7 @@ import { async, TestBed } from '@angular/core/testing';
 
 import { UserComponent } from './user.component';
 import { UserService } from './user.service';
+import { DataService } from '../shared/data.service';
 
 describe('UserComponent', () => {
   beforeEach(async(() => {
@@ -42,5 +43,14 @@ describe('UserComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
     expect(compiled.querySelector('p').textContent).not.toContain(userComponent.user.name);
+  });
+
+  it('should not fetch data successfully if not called asynchronously', () => {
+    const fixture = TestBed.createComponent(UserComponent);
+    const userComponent = fixture.componentInstance;
+    const dataService = fixture.debugElement.injector.get<DataService>(DataService);
+    spyOn(dataService, 'getDetails').and.returnValue(Promise.resolve('Data'));
+    fixture.detectChanges();
+    expect(userComponent.data).toEqual(undefined);
   });
 });
