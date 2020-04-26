@@ -53,4 +53,16 @@ describe('UserComponent', () => {
     fixture.detectChanges();
     expect(userComponent.data).toEqual(undefined);
   });
+
+  it('should fetch data successfully if called asynchronously', async(() => {
+    const fixture = TestBed.createComponent(UserComponent);
+    const userComponent = fixture.componentInstance;
+    const dataService = fixture.debugElement.injector.get<DataService>(DataService);
+    const data = 'Data';
+    spyOn(dataService, 'getDetails').and.returnValue(Promise.resolve(data));
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(userComponent.data).toEqual(data);
+    });
+  }));
 });
