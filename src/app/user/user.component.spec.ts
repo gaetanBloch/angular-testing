@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { UserComponent } from './user.component';
 import { UserService } from './user.service';
@@ -54,7 +54,7 @@ describe('UserComponent', () => {
     expect(userComponent.data).toEqual(undefined);
   });
 
-  it('should fetch data successfully if called asynchronously', async(() => {
+  it('[async] should fetch data successfully if called asynchronously', async(() => {
     const fixture = TestBed.createComponent(UserComponent);
     const userComponent = fixture.componentInstance;
     const dataService = fixture.debugElement.injector.get<DataService>(DataService);
@@ -64,5 +64,16 @@ describe('UserComponent', () => {
     fixture.whenStable().then(() => {
       expect(userComponent.data).toEqual(data);
     });
+  }));
+
+  it('[fakeAsync] should fetch data successfully if called asynchronously', fakeAsync(() => {
+    const fixture = TestBed.createComponent(UserComponent);
+    const userComponent = fixture.componentInstance;
+    const dataService = fixture.debugElement.injector.get<DataService>(DataService);
+    const data = 'Data';
+    spyOn(dataService, 'getDetails').and.returnValue(Promise.resolve(data));
+    fixture.detectChanges();
+    tick();
+    expect(userComponent.data).toEqual(data);
   }));
 });
