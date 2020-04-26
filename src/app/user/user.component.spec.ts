@@ -11,9 +11,9 @@ describe('UserComponent', () => {
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
+  it('should create the user component', () => {
     const fixture = TestBed.createComponent(UserComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    const userComponent = fixture.componentInstance;
+    expect(userComponent).toBeTruthy();
   });
 });
